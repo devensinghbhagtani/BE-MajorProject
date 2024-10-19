@@ -3,29 +3,30 @@ import { ChevronLeft, Copy, ThumbsDown, ThumbsUp, Trash2 } from "lucide-react";
 import ReactMarkdown from "react-markdown"; // Import markdown parser
 
 const markdown = `
-# My Markdown Example
+# Action Items
 
-This is a simple example of using React Markdown. Here are some key points:
-
-- **Easy to use:** React Markdown allows you to render Markdown syntax in your React components.
-- **Supports various Markdown features:** You can use headings, lists, code blocks, and more.
-- **Customizable:** You can customize the rendering of different Markdown elements using plugins or custom components.
-- **Lightweight:** It's a lightweight solution for displaying formatted text.
-
-## Numbered List
-1. First item
-2. Second item
-3. Third item
-## Conclusion
-Using React Markdown makes it simple to include formatted text in your React applications.
+- [ ] Complete the project report
+- [x] Review the meeting notes
+- [ ] Schedule the next meeting
 `;
+
+function renderCheckbox(isChecked) {
+  return (
+    <input
+      type="checkbox"
+      checked={isChecked}
+      readOnly
+      className="mr-2" // Adjust margin as needed
+    />
+  );
+}
 
 function ResultPage({ aiResponse }) {
   return (
     <div>
       <div className="text-lg items-center underline w-fit flex gap-2 text-zinc-500 cursor-pointer mb-4">
         <ChevronLeft size={20} />
-        <h1 className=" ">Meeting Transcription</h1>
+        <h1 className="">Meeting Transcription</h1>
       </div>
       <div className="bg-white p-6 rounded-lg border-2 mt-4">
         <div className="flex justify-between items-center mb-4">
@@ -46,35 +47,59 @@ function ResultPage({ aiResponse }) {
         <div>
           <ReactMarkdown
             components={{
+              li: ({ children }) => {
+                const text = children[0]; // Access the child directly
+                const isChecked = text.startsWith("[x]"); // Check if it's checked
+
+                // Update regex to remove only leading and trailing whitespace
+                const itemText = text.replace(/^\s+|\s+$/g, "").trim();
+
+                return (
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      readOnly
+                      className="mr-2" // Adjust margin as needed
+                    />
+                    <span className="ml-2 text-lg text-zinc-600">
+                      {itemText}
+                    </span>
+                  </label>
+                );
+              },
+
               h1: ({ children }) => (
-                <h1 className="text-4xl font-semibold my-3">{children}</h1> // Adjusted spacing
+                <h1 className="text-3xl text-zinc-800 font-semibold my-3">
+                  {children}
+                </h1>
               ),
               h2: ({ children }) => (
-                <h2 className="text-2xl font-medium my-3">{children}</h2> // Adjusted spacing
+                <h2 className="text-2xl text-zinc-800 font-medium my-3">
+                  {children}
+                </h2>
               ),
               h3: ({ children }) => (
-                <h3 className="text-xl font-medium my-2">{children}</h3> // Adjusted spacing
+                <h3 className="text-xl text-zinc-800 font-medium my-2">
+                  {children}
+                </h3>
               ),
               p: ({ children }) => (
-                <p className="text-lg my-2">{children}</p> // Slightly reduced vertical spacing
+                <p className="text-lg my-2 text-zinc-600">{children}</p>
               ),
               ul: ({ children }) => (
-                <ul className="list-disc pl-8 my-2">{children}</ul> // Added margin for unordered lists
+                <ul className="list-disc pl-8 my-2">{children}</ul>
               ),
               ol: ({ children }) => (
-                <ol className="list-decimal pl-8 my-2">{children}</ol> // Added margin for ordered lists
-              ),
-              li: ({ children }) => (
-                <li className="mb-1 text-lg">{children}</li> // Keep space below list items
+                <ol className="list-decimal pl-8 my-2">{children}</ol>
               ),
               strong: ({ children }) => (
-                <strong className="font-semibold">{children}</strong> // Strong tag for semibold
+                <strong className="font-semibold">{children}</strong>
               ),
             }}
           >
-            {aiResponse}
-          </ReactMarkdown>{" "}
-          {/* Render markdown */}
+            {markdown}
+          </ReactMarkdown>
         </div>
       </div>
     </div>

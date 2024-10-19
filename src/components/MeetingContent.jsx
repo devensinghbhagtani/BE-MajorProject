@@ -3,6 +3,7 @@ import { ArrowLeftSquareIcon, Search } from "lucide-react";
 import SpeakerStats from "./SpeakerStats";
 import SearchHistory from "./SearchHistory";
 import ResultPage from "./ResultPage";
+import ActionItems from "./ActionItems";
 
 function MeetingContent() {
   const [showAllHistory, setShowAllHistory] = useState(false);
@@ -86,7 +87,8 @@ Using React Markdown makes it simple to include formatted text in your React app
       <div className="flex mt-6">
         {showResult ? (
           <div className="w-[70%] pr-8">
-            <ResultPage aiResponse={aiResponse} /> {/* Pass AI response */}
+            <ActionItems aiResponse={aiResponse} />
+            {/* <ResultPage aiResponse={aiResponse} />  */}
           </div>
         ) : (
           <div className="w-[70%] pr-8">
