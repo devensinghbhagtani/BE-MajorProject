@@ -1,10 +1,16 @@
 import React from "react";
+import { PlusSquare, Calendar, Share2, Settings, Archive } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function SideBar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path;
   return (
-    <div className="h-full w-full flex flex-col">
+    <div className="h-screen w-80 flex flex-col">
       {/* Top section (Image) */}
-      <div className="w-full px-7 pt-9 pb-5">
+      <div className="w-full px-7 pt-9 pb-1">
         <img
           className="w-[180px]"
           src="src/assets/CareerLens logo.svg"
@@ -14,28 +20,53 @@ function SideBar() {
 
       {/* Scrollable middle section */}
       <div className="px-7 pt-5 flex-1 overflow-y-auto">
-        <div className="relative text-lg flex flex-col gap-4">
-          <h1>My Meetings</h1>
-          <h1>Shared with Me</h1>
-          <h1>Tools</h1>
-          <h1>Account & Settings</h1>
-          <h1>Archive</h1>
+        <div className="relative flex flex-col">
+          <div
+            className={`hover:bg-[#F5F2FE] focus:bg-[#F5F2FE] cursor-pointer pointer-events-auto p-3 rounded-lg flex items-center gap-3 ${
+              isActive("/add-meeting") ? "bg-[#F5F2FE]" : ""
+            }`}
+            onClick={() => navigate("/add-meeting")}
+          >
+            <PlusSquare size={20} />
+            <span>Add a Meeting</span>
+          </div>
+          <div
+            className={`hover:bg-[#F5F2FE] focus:bg-[#F5F2FE] cursor-pointer pointer-events-auto p-3 rounded-lg flex items-center gap-3 ${
+              isActive("/meeting-content") ? "bg-[#F5F2FE]" : ""
+            }`}
+            onClick={() => navigate("/meeting-content")}
+          >
+            <Calendar size={20} />
+            <span>My Meetings</span>
+          </div>
+          <div className="hover:bg-[#F5F2FE] focus:bg-[#F5F2FE] cursor-pointer pointer-events-auto p-3 rounded-lg flex items-center gap-3">
+            <Share2 size={20} />
+            <span>Shared with Me</span>
+          </div>
+          <div className="hover:bg-[#F5F2FE] focus:bg-[#F5F2FE] cursor-pointer pointer-events-auto p-3 rounded-lg flex items-center gap-3">
+            <Settings size={20} />
+            <span>Account & Settings</span>
+          </div>
+          <div className="hover:bg-[#F5F2FE] focus:bg-[#F5F2FE] cursor-pointer pointer-events-auto p-3 rounded-lg flex items-center gap-3">
+            <Archive size={20} />
+            <span>Archive</span>
+          </div>
         </div>
-        <hr className="border-zinc-200 my-8" />
-        <h1 className="mb-3">Recent Messages</h1>
-        <div className="flex flex-col gap-2">
-          <div className="w-full bg-[#F5F2FE] p-3 rounded-lg border-[1px] border-zinc-300">
+        <hr className="border-zinc-200 mt-5 mb-8" />
+        <h1 className="mb-3 pl-3 text-sm font-semibold">Recent Messages</h1>
+        <div className="flex flex-col ">
+          <div className="w-full cursor-pointer hover:bg-[#F5F2FE] p-3 rounded-lg ">
             Meetings with Nupur Ma'am
           </div>
           {/* Repeat the message containers as needed */}
-          <div className="w-full bg-[#F5F2FE] p-3 rounded-lg border-[1px] border-zinc-300">
+          <div className="w-full cursor-pointer hover:bg-[#F5F2FE] p-3 rounded-lg ">
             Meetings with Nupur Ma'am
           </div>
-          <div className="w-full bg-[#F5F2FE] p-3 rounded-lg border-[1px] border-zinc-300">
+          <div className="w-full cursor-pointer hover:bg-[#F5F2FE] p-3 rounded-lg ">
             Meetings with Nupur Ma'am Meetings with Nupur Ma'amMeetings with
             Nupur Ma'am
           </div>
-          <div className="w-full bg-[#F5F2FE] p-3 rounded-lg border-[1px] border-zinc-300">
+          <div className="w-full cursor-pointer hover:bg-[#F5F2FE] p-3 rounded-lg ">
             Meetings with Nupur Ma'am Meetings with Nupur Ma'amMeetings with
             Nupur Ma'amMeetings with Nupur Ma'am
           </div>

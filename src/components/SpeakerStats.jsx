@@ -4,7 +4,7 @@ import { Download, Share, PencilIcon, Trash } from "lucide-react";
 function SpeakerStats() {
   return (
     <div className="w-full pl-6">
-      <div className="flex flex-col gap-2 mb-6">
+      {/* <div className="flex flex-col gap-2 mb-6">
         <div className="flex gap-2 ">
           <button className="flex gap-1 items-center border-[2px] rounded-lg p-2 w-full border-zinc-800">
             <Download size={15} />
@@ -26,8 +26,8 @@ function SpeakerStats() {
           </button>
         </div>
       </div>
-      <hr className="border-zinc-400" />
-      <h1 className="text-xl mt-4 font-semibold">Speaker Stats</h1>
+      <hr className="border-zinc-400" /> */}
+      <h1 className="text-xl font-semibold">Speaker Stats</h1>
       <div className="mt-4">
         <div className="mt-4">
           <h1>Piyush Chugeja</h1>

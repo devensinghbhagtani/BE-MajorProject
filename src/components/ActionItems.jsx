@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeft, Copy, ThumbsDown, ThumbsUp, Trash2 } from "lucide-react";
-import ReactMarkdown from "react-markdown"; // Import markdown parser
+import ReactMarkdown from "react-markdown";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Dummy action items data
 const actionItems = [
@@ -41,15 +42,24 @@ This project is a **React-based Action Items Manager** that allows users to view
 
 ## Conclusion
 
-This project serves as a simple yet effective way to manage tasks and action items derived from meetings. It leverages the power of React and Markdown to provide a seamless user experience while remaining lightweight and customizable.`;
+This project serves as a simple yet effective way to manage tasks and action items derived from meetings. It leverages the power of React and Markdown to provide a seamless user experience while remaining lightweight and customizable.
+`;
 
-function ActionItems({ aiResponse }) {
+function ActionItems() {
+  const location = useLocation();
+  const { summary, action_items, insights } = location.state || {};
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <div className="text-lg items-center underline w-fit flex gap-2 text-zinc-500 cursor-pointer mb-4">
+    <div className="p-8 w-full h-screen overflow-y-auto">
+      <div
+        className="text-lg items-center underline w-fit flex gap-2 text-zinc-500 cursor-pointer mb-4"
+        onClick={() => navigate("/meeting-content")}
+      >
         <ChevronLeft size={20} />
         <h1 className="">Meeting Transcription</h1>
       </div>
+      {/* Action Items */}
       <div className="bg-white p-6 rounded-lg border-2 mt-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">✅ Action Items</h1>
@@ -66,23 +76,24 @@ function ActionItems({ aiResponse }) {
             </div>
           </div>
         </div>
+
         <div>
-          {actionItems.map((item) => (
-            <div key={item.id} className="flex gap-3 items-center mb-2">
+          {actionItems.map((item, index) => (
+            <div key={index} className="flex gap-3 items-center mb-2">
               <input
                 type="checkbox"
-                checked={item.isChecked}
                 className="size-4"
-                id={item.id} // Unique ID for each checkbox
+                id={`item-${index}`}
                 onChange={() => {}}
               />
-              <label className="text-lg" htmlFor={item.id}>
+              <label className="text-lg" htmlFor={`item-${index}`}>
                 {item.text}
               </label>
             </div>
           ))}
         </div>
       </div>
+      {/* Summary */}
       <div className="bg-white p-6 rounded-lg border-2 mt-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">📝 Summary</h1>
@@ -99,6 +110,7 @@ function ActionItems({ aiResponse }) {
             </div>
           </div>
         </div>
+
         <div>
           <ReactMarkdown
             components={{
@@ -134,7 +146,64 @@ function ActionItems({ aiResponse }) {
               ),
             }}
           >
-            {markdown}
+            {Array.isArray(summary) ? summary.join(", ") : summary}
+          </ReactMarkdown>
+        </div>
+      </div>
+      {/* Insights */}
+      <div className="bg-white p-6 rounded-lg border-2 mt-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-semibold">📝 Insights</h1>
+          <div className="flex gap-4 items-center">
+            <ThumbsUp size={20} />
+            <ThumbsDown size={20} />
+            <div className="flex gap-1 items-center">
+              <Copy size={20} />
+              <h1 className="text-sm">Copy</h1>
+            </div>
+            <div className="flex gap-1 items-center">
+              <Trash2 size={20} />
+              <h1 className="text-sm">Delete</h1>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <ReactMarkdown
+            components={{
+              h1: ({ children }) => (
+                <h1 className="text-3xl text-zinc-800 font-semibold my-3">
+                  {children}
+                </h1>
+              ),
+              h2: ({ children }) => (
+                <h2 className="text-2xl text-zinc-800 font-medium my-3">
+                  {children}
+                </h2>
+              ),
+              h3: ({ children }) => (
+                <h3 className="text-xl text-zinc-800 font-medium my-2">
+                  {children}
+                </h3>
+              ),
+              p: ({ children }) => (
+                <p className="text-lg my-2 text-zinc-600">{children}</p>
+              ),
+              ul: ({ children }) => (
+                <ul className="list-disc pl-8 my-2">{children}</ul>
+              ),
+              ol: ({ children }) => (
+                <ol className="list-decimal pl-8 my-2">{children}</ol>
+              ),
+              li: ({ children }) => (
+                <li className="mb-1 text-lg text-zinc-600">{children}</li>
+              ),
+              strong: ({ children }) => (
+                <strong className="font-semibold">{children}</strong>
+              ),
+            }}
+          >
+            {Array.isArray(insights) ? insights.join(", ") : insights}
           </ReactMarkdown>
         </div>
       </div>
